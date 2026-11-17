@@ -19,7 +19,7 @@ API_KEY = os.getenv("GEMINI_API_KEY")
 if not API_KEY:
     raise ValueError("GEMINI_API_KEY not found in environment variables")
 
-client = genai.Client(api_key=API_KEY)
+client = genai.Client(api_key=API_KEY, http_options=types.HttpOptions(api_version="v1beta"))
 
 # Define the mandatory sources
 OFFICIAL_SOURCES = [

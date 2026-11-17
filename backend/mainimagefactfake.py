@@ -30,7 +30,7 @@ def run_multimodal_pipeline(text, img_path):
         print("❌ Error: GEMINI_API_KEY missing.")
         return
 
-    client = genai.Client(api_key=API_KEY)
+    client = genai.Client(api_key=API_KEY, http_options=types.HttpOptions(api_version="v1beta"))
     model_id = "gemini-2.5-flash"
     out_folder = get_timestamped_folder()
 
