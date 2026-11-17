@@ -376,8 +376,17 @@ body::before {
 
 .dock-item .icon { width: 24px; height: 24px; margin-bottom: 3px; fill: currentColor; transition: 0.2s; }
 .dock-item .label { font-size: 9px; font-weight: 600; text-decoration: none; }
-.dock-item.active { color: var(--dl-blue); }
-.dock-item.active .icon { transform: translateY(-2px); }
+
+/* Each tab keeps a fixed color instead of flat grey; no vertical shift
+   on .active so the row no longer jumps/"dances" between icons. */
+.dock-home { color: var(--dl-blue); }
+.dock-fake { color: #c62828; }
+.dock-news { color: #2e7d32; }
+.dock-camp { color: #ef6c00; }
+.dock-check { color: #6a1b9a; }
+.dock-circulars { color: #283593; }
+.dock-item.active { opacity: 1; }
+.dock-item:not(.active) { opacity: 0.55; }
 
 a.dock-item, a.dock-item:hover, a.dock-item:visited, a.dock-item:active, a.dock-item span {
     text-decoration: none !important; border-bottom: none !important; color: inherit; 
