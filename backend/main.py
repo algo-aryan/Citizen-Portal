@@ -81,7 +81,7 @@ def handle_chat():
             return jsonify({"reply": "Please enter a message."}), 400
 
         response = client.models.generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-3.8-flash",
             config=types.GenerateContentConfig(
                 system_instruction=CIVIC_SYSTEM_PROMPT,
                 max_output_tokens=500,
@@ -114,7 +114,7 @@ def analyze_media():
             img = PIL.Image.open(temp_path)
             
             vlm_res = client.models.generate_content(
-                model="gemini-2.0-flash", 
+                model="gemini-3.8-flash", 
                 contents=[img, "Forensic check: Is this AI-generated, a deepfake, or an authentic photo? Look for GAN artifacts."]
             )
             vlm_analysis = vlm_res.text
@@ -123,7 +123,7 @@ def analyze_media():
         if text_claim:
             search_tool = types.Tool(google_search=types.GoogleSearch())
             search_res = client.models.generate_content(
-                model="gemini-2.0-flash",
+                model="gemini-3.8-flash",
                 contents=f"Fact check this claim: {text_claim}. Context from image scan: {vlm_analysis}.",
                 config=types.GenerateContentConfig(tools=[search_tool])
             )
@@ -144,7 +144,7 @@ def analyze_media():
         }}
         """
         
-        verdict_res = client.models.generate_content(model="gemini-2.0-flash", contents=final_prompt)
+        verdict_res = client.models.generate_content(model="gemini-3.8-flash", contents=final_prompt)
         
         raw_text = verdict_res.text.strip()
         if "```json" in raw_text:

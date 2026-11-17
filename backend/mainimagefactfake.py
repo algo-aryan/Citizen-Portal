@@ -31,7 +31,7 @@ def run_multimodal_pipeline(text, img_path):
         return
 
     client = genai.Client(api_key=API_KEY)
-    model_id = "gemini-2.0-flash"
+    model_id = "gemini-3.8-flash"
     out_folder = get_timestamped_folder()
 
     image_context = ""
