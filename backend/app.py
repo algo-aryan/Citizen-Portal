@@ -39,14 +39,14 @@ def analyze_media():
 
         # 1. Vision Analysis
         vlm_res = client.models.generate_content(
-            model="gemini-2.5-flash", 
+            model="gemini-3.8-flash", 
             contents=[img, "Identify deepfake artifacts, lighting inconsistencies, or AI generation signs."]
         )
 
         # 2. Grounding Search
         search_tool = types.Tool(google_search=types.GoogleSearch())
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-3.8-flash",
             contents=f"Fact check: {text_claim}. Use this image description as context: {vlm_res.text}",
             config=types.GenerateContentConfig(tools=[search_tool])
         )
@@ -59,7 +59,7 @@ def analyze_media():
         Classify confidence as either 'HIGH' or 'MEDIUM' or 'LOW' based on detection certainty strictly
         No markdown formatting.
         """
-        verdict_res = client.models.generate_content(model="gemini-2.5-flash", contents=final_prompt)
+        verdict_res = client.models.generate_content(model="gemini-3.8-flash", contents=final_prompt)
         
         # Parse text to JSON
         raw_text = verdict_res.text.strip().replace('```json', '').replace('```', '')

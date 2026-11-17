@@ -49,27 +49,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const dots = document.querySelectorAll('.dot');
 
-        track.addEventListener('scroll', () => {
-            const slideWidth = slides[0].getBoundingClientRect().width;
-            const scrollIndex = Math.round(track.scrollLeft / slideWidth);
-            
-            dots.forEach((d, i) => {
-                if (i === scrollIndex) d.classList.add('active');
-                else d.classList.remove('active');
-            });
-        });
-
         let currentIndex = 0;
         const totalSlides = slides.length;
-        const gap = 15; 
+        const gap = 15;
+
+        // The dot used to twitch during every smooth scroll because this index
+        // ignored the 15px gap that the auto-advance below adds, so the two
+        // disagreed and the active class flipped back and forth mid-animation.
+        // Include the gap, and only touch the DOM when the slide really changes.
+        function activeIndex() {
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            return Math.round(track.scrollLeft / (slideWidth + gap));
+        }
+
+        function paintDots(index) {
+            dots.forEach((d, i) => d.classList.toggle('active', i === index));
+        }
+
+        track.addEventListener('scroll', () => {
+            const index = activeIndex();
+            if (index === currentIndex || index < 0 || index >= totalSlides) return;
+            currentIndex = index;
+            paintDots(currentIndex);
+        }, { passive: true });
 
         setInterval(() => {
             currentIndex = (currentIndex + 1) % totalSlides;
             const slideWidth = slides[0].getBoundingClientRect().width;
-            const scrollPosition = (slideWidth + gap) * currentIndex;
 
+            paintDots(currentIndex);
             track.scrollTo({
-                left: scrollPosition,
+                left: (slideWidth + gap) * currentIndex,
                 behavior: 'smooth'
             });
         }, 4000);
